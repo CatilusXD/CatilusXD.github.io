@@ -1,1 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Catilus Executor</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: white;
+      overflow: hidden;
+    }
 
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .navbar {
+      background: #111;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      border-bottom: 1px solid #444;
+    }
+
+    .navbar button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .navbar button:hover {
+      text-decoration: underline;
+    }
+
+    .section {
+      display: none;
+      margin-top: 40px;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    h1 {
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+
+    .price-section {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      flex-wrap: wrap;
+    }
+
+    .plan {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 25px;
+      width: 280px;
+      text-align: left;
+    }
+
+    .plan h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .plan ul {
+      list-style: none;
+      padding: 0;
+      font-size: 18px;
+    }
+
+    .plan ul li {
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="snow"></canvas>
+
+<div class="navbar">
+  <button onclick="showTab('home')">Home</button>
+  <button onclick="showTab('prices')">Prices</button>
+</div>
+
+<div class="container">
+
+  <!-- HOME SECTION -->
+  <div id="home" class="section active">
+    <h1>Buy Catilus Executor</h1>
+    <p>Secure, fast, and powerful Roblox execution.</p>
+    <p style="font-size: 20px;">Start your experience now!</p>
+  </div>
+
+  <!-- PRICES SECTION -->
+  <div id="prices" class="section">
+    <h1>Pricing Plans</h1>
+    <div class="price-section">
+      <div class="plan">
+        <h2>Normal Plan</h2>
+        <ul>
+          <li>£1.99 — 1 Day</li>
+          <li>£6.99 — 1 Month</li>
+          <li>£13.99 — 1 Year</li>
+          <li>£30.99 — Lifetime</li>
+        </ul>
+      </div>
+      <div class="plan">
+        <h2>Premium Plan</h2>
+        <ul>
+          <li>£10.00 — 1 Month</li>
+          <li>£30.00 — 1 Year</li>
+          <li>£42.00 — Lifetime</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function showTab(id) {
+    document.querySelectorAll('.section').forEach(section => {
+      section.classList.remove('active');
+    });
+    document.getElementById(id).classList.add('active');
+  }
+
+  // Snow effect
+  const canvas = document.getElementById('snow');
+  const ctx = canvas.getContext('2d');
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  canvas.width = width;
+  canvas.height = height;
+
+  const flakes = [];
+  for (let i = 0; i < 200; i++) {
+    flakes.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 2 + 1,
+      d: Math.random() * 1 + 0.5
+    });
+  }
+
+  function drawFlakes() {
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = 'white';
+    ctx.beginPath();
+    for (const f of flakes) {
+      ctx.moveTo(f.x, f.y);
+      ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+    }
+    ctx.fill();
+    updateFlakes();
+    requestAnimationFrame(drawFlakes);
+  }
+
+  function updateFlakes() {
+    for (const f of flakes) {
+      f.y += f.d;
+      if (f.y > height) {
+        f.y = -f.r;
+        f.x = Math.random() * width;
+      }
+    }
+  }
+
+  window.addEventListener('resize', () => {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  });
+
+  drawFlakes();
+</script>
+
+</body>
+</html>
